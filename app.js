@@ -1,54 +1,87 @@
-const DATA_URL = "data.json?t=" + Date.now()
+const DATA_URL = "data.json?t=" + Date.now();
+
+function num(v, d = 0) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : d;
+}
+
+function txt(v, d = "—") {
+  return v === undefined || v === null || v === "" ? d : v;
+}
+
+function parseTeaData(raw) {
+  const rt = raw.realtime || {};
+  const weather = raw.weather || {};
+
+  function stationBlock(stationNo, depth) {
+    const base = `Station${stationNo}_${depth}_`;
+    return {
+      soilTemp: num(rt[base + "SoilTemp"]),
+      soilMoisture: num(rt[base + "SoilMoisture"]),
+      nitrogen: num(rt[base + "Nitrogen"]),
+      phosphorus: num(rt[base + "Phosphorus"]),
+      potassium: num(rt[base + "Potassium"])
+    };
+  }
+
+  return {
+    time: txt(raw.time),
+    weather: {
+      airTemp: num(weather.air_temp),
+      humidity: num(weather.humidity),
+      weather: txt(weather.weather),
+      precip: num(weather.precip),
+      obsTime: txt(weather.obs_time),
+      location: txt(weather.location, "名間鄉")
+    },
+    teaAir: {
+      temp: num(rt["TeaGarden_Air_Temp"]),
+      humidity: num(rt["TeaGarden_Air_Humidity"])
+    },
+    stations: {
+      Surface: [1, 2, 3, 4].map(i => ({ name: `第${i}站`, ...stationBlock(i, "Surface") })),
+      "15cm": [1, 2, 3, 4].map(i => ({ name: `第${i}站`, ...stationBlock(i, "15cm") })),
+      "25cm": [1, 2, 3, 4].map(i => ({ name: `第${i}站`, ...stationBlock(i, "25cm") }))
+    }
+  };
+}
 
 async function loadTeaData() {
+  const res = await fetch(DATA_URL, { cache: "no-store" });
+  if (!res.ok) throw new Error("data.json 載入失敗");
+  const raw = await res.json();
+  return parseTeaData(raw);
+}
 
-    const res = await fetch(DATA_URL,{cache:"no-store"})
-    const raw = await res.json()
+function makeDepthButtons(active = "Surface") {
+  return `
+    <div class="depth-switch">
+      <button data-depth="Surface" class="${active === "Surface" ? "active" : ""}">表面層</button>
+      <button data-depth="15cm" class="${active === "15cm" ? "active" : ""}">15cm</button>
+      <button data-depth="25cm" class="${active === "25cm" ? "active" : ""}">25cm</button>
+    </div>
+  `;
+}
 
-    const rt = raw.realtime || {}
+function stationTableRows(items) {
+  return items.map(s => `
+    <tr>
+      <td>${s.name}</td>
+      <td>${s.soilTemp}</td>
+      <td>${s.soilMoisture}</td>
+      <td>${s.nitrogen}</td>
+      <td>${s.phosphorus}</td>
+      <td>${s.potassium}</td>
+    </tr>
+  `).join("");
+}
 
-    function station(n,depth){
-
-        const base = `Station${n}_${depth}_`
-
-        return {
-            name:`第${n}站`,
-            temp: Number(rt[base+"SoilTemp"]) || 0,
-            moisture: Number(rt[base+"SoilMoisture"]) || 0,
-            n: Number(rt[base+"Nitrogen"]) || 0,
-            p: Number(rt[base+"Phosphorus"]) || 0,
-            k: Number(rt[base+"Potassium"]) || 0
-        }
-    }
-
-    return {
-
-        time: raw.time,
-
-        teaTemp: rt["TeaGarden_Air_Temp"],
-        teaHumi: rt["TeaGarden_Air_Humidity"],
-
-        surface:[
-            station(1,"Surface"),
-            station(2,"Surface"),
-            station(3,"Surface"),
-            station(4,"Surface")
-        ],
-
-        d15:[
-            station(1,"15cm"),
-            station(2,"15cm"),
-            station(3,"15cm"),
-            station(4,"15cm")
-        ],
-
-        d25:[
-            station(1,"25cm"),
-            station(2,"25cm"),
-            station(3,"25cm"),
-            station(4,"25cm")
-        ]
-
-    }
-
+function bindDepthButtons(onChange) {
+  document.querySelectorAll("[data-depth]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-depth]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      onChange(btn.dataset.depth);
+    });
+  });
 }
