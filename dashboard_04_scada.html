@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Industrial SCADA</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="./app.js"></script>
+<style>
+body{margin:0;background:#1b1f23;color:#e6edf3;font-family:"Segoe UI","Microsoft JhengHei",sans-serif}
+.wrap{padding:18px}
+.header{background:#2d333b;border:2px solid #3d444d;padding:16px;border-radius:10px;margin-bottom:14px}
+.header h1{margin:0 0 6px;font-size:32px;color:#58a6ff}
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.panel{background:#22272e;border:2px solid #3d444d;border-radius:10px;padding:14px}
+.tag{font-size:13px;color:#8b949e}
+.val{font-size:30px;font-weight:700;color:#3fb950;margin-top:8px}
+.main{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+.depth-switch{display:flex;gap:8px;margin:10px 0}
+.depth-switch button{background:#30363d;color:#e6edf3;border:1px solid #484f58;border-radius:6px;padding:8px 12px;cursor:pointer}
+.depth-switch .active{background:#238636}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #3d444d;padding:10px;text-align:center}
+th{background:#30363d}
+@media(max-width:960px){.panel-grid,.main{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>瑞成智慧茶園 / SCADA MONITOR</h1>
+    <div id="meta">讀取中...</div>
+  </div>
+
+  <div class="panel-grid" id="kpis"></div>
+
+  <div class="main">
+    <div class="panel">
+      <h3>站點監控表</h3>
+      <div id="depthBox"></div>
+      <table>
+        <thead><tr><th>站點</th><th>土溫</th><th>含水</th><th>氮</th><th>磷</th><th>鉀</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h3>養分比較圖</h3>
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+let chart;
+function render(data, depth="Surface"){
+  document.getElementById("meta").textContent = `系統時間：${data.time} ｜ 氣象更新：${data.weather.obsTime} ｜ 天氣：${data.weather.weather}`;
+  document.getElementById("kpis").innerHTML = `
+    <div class="panel"><div class="tag">茶園溫度</div><div class="val">${data.teaAir.temp}°C</div></div>
+    <div class="panel"><div class="tag">茶園濕度</div><div class="val">${data.teaAir.humidity}%</div></div>
+    <div class="panel"><div class="tag">外部溫度</div><div class="val">${data.weather.airTemp}°C</div></div>
+    <div class="panel"><div class="tag">雨量</div><div class="val">${data.weather.precip} mm</div></div>
+  `;
+  document.getElementById("depthBox").innerHTML = makeDepthButtons(depth);
+  document.getElementById("tbody").innerHTML = stationTableRows(data.stations[depth]);
+  bindDepthButtons(d => render(data, d));
+
+  const items = data.stations[depth];
+  if(chart) chart.destroy();
+  chart = new Chart(document.getElementById("chart"), {
+    type:"bar",
+    data:{
+      labels:items.map(s=>s.name),
+      datasets:[
+        {label:"氮",data:items.map(s=>s.nitrogen),backgroundColor:"#3fb950"},
+        {label:"磷",data:items.map(s=>s.phosphorus),backgroundColor:"#d29922"},
+        {label:"鉀",data:items.map(s=>s.potassium),backgroundColor:"#f85149"}
+      ]
+    }
+  });
+}
+loadTeaData().then(d=>render(d));
+</script>
+</body>
+</html>
