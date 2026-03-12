@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Apple Style Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="./app.js"></script>
+<style>
+  body{margin:0;background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Microsoft JhengHei",sans-serif;color:#1d1d1f}
+  .wrap{max-width:1280px;margin:auto;padding:24px}
+  .hero,.card{background:rgba(255,255,255,.72);backdrop-filter:blur(20px);border:1px solid rgba(0,0,0,.06);border-radius:28px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+  .hero{padding:28px;margin-bottom:20px}
+  .hero h1{margin:0 0 8px;font-size:42px}
+  .muted{color:#6e6e73}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:20px}
+  .card{padding:20px}
+  .kpi{font-size:34px;font-weight:700;margin-top:8px}
+  .row2{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+  .depth-switch{display:flex;gap:10px;margin:14px 0 18px}
+  .depth-switch button{border:none;border-radius:999px;padding:10px 18px;background:#e8e8ed;cursor:pointer}
+  .depth-switch .active{background:#0071e3;color:#fff}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:12px;text-align:center;border-bottom:1px solid #eee}
+  canvas{max-height:340px}
+  @media(max-width:960px){.grid,.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>瑞成智慧茶園</h1>
+    <div class="muted" id="meta">載入中…</div>
+  </div>
+
+  <div class="grid" id="kpis"></div>
+
+  <div class="row2">
+    <div class="card">
+      <h2>土壤資料</h2>
+      <div id="depthBox"></div>
+      <table>
+        <thead>
+          <tr><th>站點</th><th>溫度</th><th>含水率</th><th>N</th><th>P</th><th>K</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>含水率比較</h2>
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+let chart;
+function render(data, depth="Surface"){
+  document.getElementById("meta").textContent =
+    `更新時間：${data.time} ｜ 氣象站：${data.weather.location} ｜ 天氣：${data.weather.weather}`;
+
+  document.getElementById("kpis").innerHTML = `
+    <div class="card"><div class="muted">茶園溫度</div><div class="kpi">${data.teaAir.temp}°C</div></div>
+    <div class="card"><div class="muted">茶園濕度</div><div class="kpi">${data.teaAir.humidity}%</div></div>
+    <div class="card"><div class="muted">氣象溫度</div><div class="kpi">${data.weather.airTemp}°C</div></div>
+    <div class="card"><div class="muted">降雨量</div><div class="kpi">${data.weather.precip} mm</div></div>
+  `;
+  document.getElementById("depthBox").innerHTML = makeDepthButtons(depth);
+  document.getElementById("tbody").innerHTML = stationTableRows(data.stations[depth]);
+  bindDepthButtons(d => render(data, d));
+
+  const labels = data.stations[depth].map(s => s.name);
+  const values = data.stations[depth].map(s => s.soilMoisture);
+  if(chart) chart.destroy();
+  chart = new Chart(document.getElementById("chart"), {
+    type:"bar",
+    data:{labels,datasets:[{label:"含水率",data:values,borderRadius:12,backgroundColor:"rgba(0,113,227,.55)"}]},
+    options:{plugins:{legend:{display:false}},responsive:true}
+  });
+}
+loadTeaData().then(d=>render(d));
+</script>
+</body>
+</html>
