@@ -1,0 +1,414 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="zh-tw">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>問</title>
+</head>
+
+<body>
+
+<p><font size="5" color="#FF0000">問</font></p>
+<p>https://momo020406.github.io/Ruicheng-Tea-Factory/data.json<br>
+<br>
+GitHub Repo<br>
+momo020406/Ruicheng-Tea-Factory<br>
+<br>
+<br>
+<br>
+Branch<br>
+main<br>
+<br>
+Token<br>
+ghp_j</p>
+<p><br>
+<br>
+Dashboard URL<br>
+https://github.com/momo020406/Ruicheng-Tea-Factory<br>
+<br>
+<br>
+我已經有原始數據了https://momo020406.github.io/Ruicheng-Tea-Factory/data.json<br>
+這是 瑞成茶廠 的感測數據(https://www.tcct.com.tw/www.tcct.com.tw/Ruicheng_STG/?t=1773305161020)<br>
+&lt;!DOCTYPE html&gt;<br>
+&lt;html lang=&quot;zh-Hant&quot;&gt;<br>
+&lt;head&gt;<br>
+&lt;meta charset=&quot;UTF-8&quot; /&gt;<br>
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;<br>
+&lt;title&gt;瑞成智慧茶園 - 即時儀表板 v6.9&lt;/title&gt;<br>
+&lt;style&gt;<br>
+:root{<br>
+--bg:#CDEDC7;<br>
+--panel:#245953;<br>
+--tile:#E7F6E7;<br>
+--text:#0B2D2A;<br>
+--num:#0f172a;<br>
+--ok:#16a34a;<br>
+--radius:18px;<br>
+--gap:14px;<br>
+}<br>
+html,body{<br>
+height:100%;margin:0;background:var(--bg);<br>
+font-family:&quot;Microsoft JhengHei&quot;,system-ui,sans-serif;color:var(--text);<br>
+}<br>
+.wrap{max-width:1280px;margin:auto;padding:18px;}<br>
+header{display:grid;gap:var(--gap);<br>
+grid-template-columns:1.2fr 1fr 1.2fr;align-items:stretch;}<br>
+.title{background:#e8f7ee;border:4px solid var(--panel);<br>
+border-radius:var(--radius);display:flex;align-items:center;<br>
+justify-content:center;flex-direction:column;padding:12px;}<br>
+.title h1{margin:6px 0 2px 0;font-size:44px;letter-spacing:4px;}<br>
+.clock,.datebox{<br>
+background:#fff;border:4px solid var(--panel);<br>
+border-radius:var(--radius);display:flex;align-items:center;<br>
+justify-content:center;flex-direction:column;font-weight:700;}<br>
+.clock{font-size:46px;}<br>
+.datebox{font-size:36px;font-weight:800;}<br>
+.source-note {<br>
+font-size: 50%; /* 縮小到原本的一半 */<br>
+color: #444; /* 顏色略淡 */<br>
+font-weight: 500;<br>
+margin-left: 4px; /* 與主標題微距 */<br>
+}<br>
+<br>
+/* 上方兩個面板 */<br>
+.top-panels{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:var(--gap);}<br>
+.panel{background:#fff;border:4px solid var(--panel);border-radius:var(--radius);padding:12px;}<br>
+.panel h2{margin:0 0 8px 0;font-size:28px}<br>
+<br>
+/* 天氣 */<br>
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 
+12px;background:var(--tile);<br>
+border-radius:14px;padding:12px;align-items:start;justify-items:start;}<br>
+.weather-cell{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;line-height:1.4}<br>
+.weather-cell img{width:36px;height:36px;}<br>
+<br>
+/* 環境感測 */<br>
+.env-grid{display:grid;grid-template-columns:1fr 
+1fr;gap:12px;background:var(--tile);<br>
+border-radius:14px;padding:12px;align-items:center;justify-items:center;}<br>
+.env-cell{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:var(--num);}<br>
+.env-cell img{width:50px;height:50px;}<br>
+.env-cell .value{font-size:36px;font-weight:800}<br>
+<br>
+/* 按鈕與表格 */<br>
+.table-wrap{margin-top:var(--gap);background:#fff;border:4px solid var(--panel);<br>
+border-radius:var(--radius);padding:14px}<br>
+.table-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:10px;}<br>
+.table-title h3{margin:0;font-size:26px}<br>
+.weather-title {<br>
+line-height: 1.3;<br>
+}<br>
+.source-note {<br>
+font-size: 55%;<br>
+color: #444;<br>
+font-weight: 500;<br>
+}<br>
+.mobile-break {<br>
+display: none;<br>
+}<br>
+<br>
+/* 📱 手機版：自動換行顯示 */<br>
+@media (max-width:768px){<br>
+.mobile-break {<br>
+display: block;<br>
+}<br>
+.source-note {<br>
+display: block;<br>
+text-align: right;;<br>
+margin-top: 2px;<br>
+}<br>
+}<br>
+<br>
+/* 統一按鈕樣式 */<br>
+.btn{<br>
+background:var(--panel);<br>
+color:#fff;<br>
+border:none;<br>
+border-radius:999px;<br>
+padding:10px 0;<br>
+width:130px;<br>
+font-size:20px;<br>
+font-weight:800;<br>
+cursor:pointer;<br>
+letter-spacing:1px;<br>
+text-align:center;<br>
+}<br>
+.btn:active{transform:translateY(1px);}<br>
+.depth-btn.active{background:var(--ok);}<br>
+<br>
+table{width:100%;border-collapse:separate;border-spacing:0 10px}<br>
+thead th{font-size:18px;color:#334155;text-align:center}<br>
+tbody td,thead th{padding:10px 8px}<br>
+tbody tr{background:var(--tile);}<br>
+tbody tr td{font-size:22px;text-align:center;font-weight:700;color:var(--num)}<br>
+tbody tr td:first-child{font-weight:800;color:#1f2937}<br>
+.footer-line{color:#2563eb;font-size:15px;margin-top:10px;text-align:center;<br>
+border-top:2px solid #a3bfa3;padding-top:6px;}<br>
+<br>
+/* ✅ 手機板改良版：四顆按鈕 2×2 對齊 */<br>
+@media (max-width:768px){<br>
+header{grid-template-columns:1fr !important;}<br>
+.title h1{font-size:32px}<br>
+.clock{font-size:32px}<br>
+.datebox{font-size:24px}<br>
+.top-panels{grid-template-columns:1fr;}<br>
+.env-grid{grid-template-columns:1fr;}<br>
+tbody tr td{font-size:18px}<br>
+<br>
+.table-title {<br>
+flex-direction: column;<br>
+align-items: center;<br>
+gap: 12px;<br>
+}<br>
+.depth-buttons {<br>
+display: grid;<br>
+grid-template-columns: repeat(2, 1fr);<br>
+gap: 10px 14px;<br>
+justify-items: center;<br>
+}<br>
+.btn {<br>
+width: 120px;<br>
+font-size: 18px;<br>
+}<br>
+}<br>
+&lt;/style&gt;<br>
+&lt;/head&gt;<br>
+&lt;body&gt;<br>
+&lt;div class=&quot;wrap&quot;&gt;<br>
+&lt;header&gt;<br>
+&lt;div class=&quot;datebox&quot; id=&quot;dateBox&quot;&gt;--&lt;/div&gt;<br>
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;瑞成智慧茶園&lt;/h1&gt;&lt;small&gt;Real-time Dashboard&lt;/small&gt;&lt;/div&gt;<br>
+&lt;div class=&quot;clock&quot;&gt;&lt;div id=&quot;mainClock&quot;&gt;00:00:00&lt;/div&gt;&lt;/div&gt;<br>
+&lt;/header&gt;<br>
+<br>
+&lt;div class=&quot;top-panels&quot;&gt;<br>
+&lt;section class=&quot;panel&quot;&gt;<br>
+&lt;h2 class=&quot;weather-title&quot;&gt;<br>
+南投 名間鄉天氣狀況<br>
+&lt;br class=&quot;mobile-break&quot;&gt;<br>
+&lt;small class=&quot;source-note&quot;&gt;(資料來源：氣象署)&lt;/small&gt;<br>
+&lt;/h2&gt;<br>
+<br>
+&lt;div class=&quot;weather-grid&quot;&gt;<br>
+&lt;div class=&quot;weather-cell&quot;&gt;&lt;img id=&quot;weatherIcon&quot; src=&quot;&quot; alt=&quot;天氣&quot;&gt;&lt;span&gt;天氣：&lt;span 
+id=&quot;weatherDesc&quot;&gt;—&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;<br>
+&lt;div class=&quot;weather-cell&quot;&gt;&lt;img src=&quot;https://img.icons8.com/emoji/48/thermometer-emoji.png&quot;&gt;&lt;span&gt;氣溫：&lt;span 
+id=&quot;weatherTemp&quot;&gt;—&lt;/span&gt; °C&lt;/span&gt;&lt;/div&gt;<br>
+&lt;div class=&quot;weather-cell&quot;&gt;&lt;img src=&quot;https://img.icons8.com/color/48/humidity.png&quot;&gt;&lt;span&gt;濕度：&lt;span 
+id=&quot;weatherHumi&quot;&gt;—&lt;/span&gt; %&lt;/span&gt;&lt;/div&gt;<br>
+&lt;div class=&quot;weather-cell&quot;&gt;&lt;img 
+src=&quot;https://img.icons8.com/emoji/48/umbrella-with-rain-drops.png&quot;&gt;&lt;span&gt;降雨量：&lt;span 
+id=&quot;rainfall&quot;&gt;—&lt;/span&gt; mm&lt;/span&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/section&gt;<br>
+<br>
+&lt;section class=&quot;panel&quot;&gt;<br>
+&lt;h2&gt;茶園溫溼度感測器&lt;/h2&gt;<br>
+&lt;div class=&quot;env-grid&quot;&gt;<br>
+&lt;div class=&quot;env-cell&quot;&gt;&lt;img 
+src=&quot;https://img.icons8.com/emoji/48/thermometer-emoji.png&quot;&gt;&lt;div&gt;&lt;span 
+class=&quot;label&quot;&gt;溫度 (°C)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;value&quot; 
+id=&quot;envTemp&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;<br>
+&lt;div class=&quot;env-cell&quot;&gt;&lt;img 
+src=&quot;https://img.icons8.com/color/48/humidity.png&quot;&gt;&lt;div&gt;&lt;span class=&quot;label&quot;&gt;濕度 
+(%)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;value&quot; id=&quot;envHumi&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/section&gt;<br>
+&lt;/div&gt;<br>
+<br>
+&lt;div class=&quot;table-wrap&quot;&gt;<br>
+&lt;div class=&quot;table-title&quot;&gt;<br>
+&lt;h3&gt;各站土壤數據&lt;/h3&gt;<br>
+&lt;div class=&quot;depth-buttons&quot;&gt; <br>
+&lt;button class=&quot;btn depth-btn active&quot; data-depth=&quot;Surface&quot;&gt;表面層&lt;/button&gt;<br>
+&lt;button class=&quot;btn depth-btn&quot; data-depth=&quot;15cm&quot;&gt;15 cm 層&lt;/button&gt;<br>
+&lt;button class=&quot;btn depth-btn&quot; data-depth=&quot;25cm&quot;&gt;25 cm 層&lt;/button&gt;<br>
+&lt;button class=&quot;btn&quot; id=&quot;btnFullscreen&quot;&gt;全螢幕&lt;/button&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+<br>
+&lt;table&gt;<br>
+&lt;thead&gt;<br>
+&lt;tr&gt;&lt;th&gt;項目&lt;/th&gt;&lt;th&gt;溫度 (°C)&lt;/th&gt;&lt;th&gt;含水率 (%)&lt;/th&gt;&lt;th&gt;氮 (N)&lt;/th&gt;&lt;th&gt;磷 (P)&lt;/th&gt;&lt;th&gt;鉀 
+(K)&lt;/th&gt;&lt;/tr&gt;<br>
+&lt;/thead&gt;<br>
+&lt;tbody id=&quot;tbody&quot;&gt;&lt;/tbody&gt;<br>
+&lt;/table&gt;<br>
+<br>
+&lt;div class=&quot;footer-line&quot; id=&quot;footerInfo&quot;&gt;<br>
+氣象站更新時間：—　｜　感測器讀取時間：—　｜　🔄 下次更新倒數：—<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+<br>
+&lt;script&gt;<br>
+const CONFIG = {<br>
+sheetCsvUrl:&quot;https://docs.google.com/spreadsheets/d/e/2PACX-1vTS7HeQa-EF65JqRoZufcn3U6msKU7NSr0QqPezgqcuCHousSsK8z_IBHkdGvLNU0XZTcreLfnBwL0M/pub?output=csv&quot;,<br>
+cwaAuth:&quot;CWA-4A8A0D9D-95EA-4DA0-A62C-2DC7A8909F06&quot;,<br>
+cwaStation:&quot;C0I410&quot;,<br>
+autoRefreshMinutes:6,<br>
+stationCount:4<br>
+};<br>
+<br>
+function pad(n){return n&lt;10?&#39;0&#39;+n:n}<br>
+function nowStr(){const d=new Date();return 
+`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`}<br>
+function dateStr(){const d=new Date();const 
+w=[&#39;日&#39;,&#39;一&#39;,&#39;二&#39;,&#39;三&#39;,&#39;四&#39;,&#39;五&#39;,&#39;六&#39;][d.getDay()];return 
+`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}（週${w}）`}<br>
+function roundInt(x){if(x==null||x===&#39;&#39;)return&#39;—&#39;;const n=Number(x);return 
+isFinite(n)?Math.round(n):String(x);}<br>
+<br>
+let weatherTime=&quot;—&quot;, genTime=&quot;—&quot;;<br>
+let remainingSec = CONFIG.autoRefreshMinutes*60;<br>
+const footer=document.getElementById(&quot;footerInfo&quot;);<br>
+function updateFooter(){<br>
+const m=Math.floor(remainingSec/60),s=pad(remainingSec%60);<br>
+footer.textContent=`氣象站更新時間：${weatherTime}　｜　感測器讀取時間：${genTime}　｜　🔄 
+下次更新倒數：${m}:${s}`;<br>
+}<br>
+<br>
+// 即時時鐘<br>
+(function clockTick(){<br>
+document.getElementById(&quot;mainClock&quot;).textContent=nowStr();<br>
+document.getElementById(&quot;dateBox&quot;).textContent=dateStr();<br>
+requestAnimationFrame(()=&gt;setTimeout(clockTick,250));<br>
+})();<br>
+<br>
+// 倒數更新<br>
+setInterval(()=&gt;{<br>
+remainingSec--;<br>
+if(remainingSec&lt;=0){location.replace(location.href.split(&quot;?&quot;)[0]+&quot;?t=&quot;+Date.now());return;}<br>
+updateFooter();<br>
+},1000);<br>
+<br>
+// CSV 讀取<br>
+async function fetchCSV(){<br>
+const res=await fetch(CONFIG.sheetCsvUrl+&quot;&amp;t=&quot;+Date.now(),{cache:&#39;no-store&#39;});<br>
+const text=await res.text();<br>
+const 
+lines=text.trim().split(/\r?\n/).map(l=&gt;l.split(&#39;,&#39;).map(v=&gt;v.replace(/^&quot;|&quot;$/g,&#39;&#39;).trim()));<br>
+const cols=lines[0].map(c=&gt;c.replace(/^\uFEFF/,&#39;&#39;).trim());<br>
+const rows=lines.slice(1);<br>
+return {cols,rows};<br>
+}<br>
+function getLastValid(rows){<br>
+for(let i=rows.length-1;i&gt;=0;i--) if(rows[i].some(v=&gt;v!==&quot;&quot;)) return rows[i];<br>
+return null;<br>
+}<br>
+<br>
+// ✅ 整數顯示版本<br>
+async function refreshSheet(depth=&quot;Surface&quot;){<br>
+try{<br>
+const {cols,rows}=await fetchCSV();<br>
+const last=getLastValid(rows);<br>
+if(!last){console.warn(&quot;⚠️ 無有效資料&quot;);return;}<br>
+const timeIdx = cols.findIndex(c=&gt;c.toLowerCase().includes(&quot;time&quot;));<br>
+genTime = timeIdx&gt;=0 ? last[timeIdx] : &quot;—&quot;;<br>
+updateFooter();<br>
+<br>
+const idx={};cols.forEach((c,i)=&gt;idx[c.toLowerCase()]=i);<br>
+document.getElementById(&quot;envTemp&quot;).textContent = 
+roundInt(last[idx[&quot;teagarden_air_temp&quot;]]);<br>
+document.getElementById(&quot;envHumi&quot;).textContent = 
+roundInt(last[idx[&quot;teagarden_air_humidity&quot;]]);<br>
+<br>
+const tbody=document.getElementById(&quot;tbody&quot;);<br>
+tbody.innerHTML=&quot;&quot;;<br>
+for(let s=1;s&lt;=CONFIG.stationCount;s++){<br>
+const p=`station${s}_${depth.toLowerCase()}`;<br>
+const tr=document.createElement(&quot;tr&quot;);<br>
+tr.innerHTML=`&lt;td&gt;第${s}站&lt;/td&gt;<br>
+&lt;td&gt;${roundInt(last[idx[`${p}_soiltemp`]])}&lt;/td&gt;<br>
+&lt;td&gt;${roundInt(last[idx[`${p}_soilmoisture`]])}&lt;/td&gt;<br>
+&lt;td&gt;${roundInt(last[idx[`${p}_nitrogen`]])}&lt;/td&gt;<br>
+&lt;td&gt;${roundInt(last[idx[`${p}_phosphorus`]])}&lt;/td&gt;<br>
+&lt;td&gt;${roundInt(last[idx[`${p}_potassium`]])}&lt;/td&gt;`;<br>
+tbody.appendChild(tr);<br>
+}<br>
+console.log(&quot;✅ 同步完成，感測器時間：&quot;, genTime);<br>
+}catch(e){console.warn(&quot;⚠️ CSV錯誤:&quot;,e);}<br>
+}<br>
+<br>
+// 氣象資料<br>
+async function refreshWeather(){<br>
+try{<br>
+const 
+url=`https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=${CONFIG.cwaAuth}&amp;format=JSON&amp;StationId=${CONFIG.cwaStation}`;<br>
+const res=await fetch(url);const js=await res.json();<br>
+const st=js.records?.Station?.[0];<br>
+const w=st?.WeatherElement||{};<br>
+document.getElementById(&quot;weatherDesc&quot;).textContent=w.Weather||&quot;—&quot;;<br>
+document.getElementById(&quot;weatherTemp&quot;).textContent=roundInt(w.AirTemperature);<br>
+document.getElementById(&quot;weatherHumi&quot;).textContent=roundInt(w.RelativeHumidity);<br>
+document.getElementById(&quot;rainfall&quot;).textContent=roundInt(w.Now?.Precipitation);<br>
+document.getElementById(&quot;weatherIcon&quot;).src=w.Weather?.includes(&quot;雨&quot;)<br>
+?&quot;https://img.icons8.com/emoji/48/cloud-with-rain.png&quot;<br>
+:&quot;https://img.icons8.com/emoji/48/sun-emoji.png&quot;;<br>
+weatherTime=(st?.ObsTime?.DateTime||&quot;&quot;).replace(&quot;T&quot;,&quot; &quot;).slice(0,19) || &quot;—&quot;;<br>
+updateFooter();<br>
+}catch(e){console.warn(&quot;⚠️ 氣象錯誤:&quot;,e);}<br>
+}<br>
+<br>
+// 層級切換<br>
+document.querySelectorAll(&quot;.depth-btn&quot;).forEach(btn=&gt;{<br>
+btn.addEventListener(&quot;click&quot;,()=&gt;{<br>
+document.querySelectorAll(&quot;.depth-btn&quot;).forEach(b=&gt;b.classList.remove(&quot;active&quot;));<br>
+btn.classList.add(&quot;active&quot;);<br>
+const depth = btn.getAttribute(&quot;data-depth&quot;);<br>
+refreshSheet(depth);<br>
+});<br>
+});<br>
+<br>
+// 初始化<br>
+refreshSheet();<br>
+refreshWeather();<br>
+document.getElementById(&quot;btnFullscreen&quot;).onclick=()=&gt;document.documentElement.requestFullscreen?.();<br>
+&lt;/script&gt;<br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br>
+<br>
+<br>
+<br>
+請你協助我 透過 https://momo020406.github.io/Ruicheng-Tea-Factory/data.json 產生20個 
+不同外觀的即時網頁Dashboard ，並且上傳到 https://github.com/momo020406/Ruicheng-Tea-Factory <br>
+<br>
+<br>
+不過，你先跟說 你會花多少錢 Token ?</p>
+<p>　</p>
+<p><font size="6" color="#FF0000">答</font></p>
+<p><img border="0" src="new_pa1.jpg"></p>
+<p>　</p>
+<p>您好！在開始為您製作 20 個儀表板之前，針對您的問題與現況，我有兩個重要的評估與提醒：</p>
+<h3>1. 💰 Token 花費與成本預估</h3>
+<p>如果您要我「直接生成 20 個不同排版與樣式的完整 HTML 程式碼」：</p>
+<ul>
+	<li><strong>Token 數量預估</strong>：以您提供的一支 HTML 程式碼約為 1,500 ~ 2,000 Tokens 
+	來算，20 個獨立的頁面大約會消耗 <strong>30,000 到 40,000 個輸出 Token (Output Tokens)</strong>。</li>
+	<li><strong>費用預估</strong>：以目前 Gemini Pro 模型的 API 價格（每百萬輸出 Token 約 $5 ~ $7.5 
+	美金）來計算，大約只會花費 <strong>$0.2 到 $0.3 美金（約新台幣 6 到 10 元）</strong>，其實非常便宜。</li>
+	<li><strong>技術限制</strong>：單次對話的「最大輸出上限」通常只有 8,192 Tokens。我<strong>無法在同一次回覆中</strong>吐出完整的 
+	20 個網頁。</li>
+</ul>
+<h3>2. ⚠️ 安全性強烈提醒 (GitHub Token 外洩)</h3>
+<p>您在訊息中直接貼出了明碼的 GitHub 個人存取權杖（<code>ghp_jlR1sEjq...</code>）。這是一個<strong>非常危險</strong>的動作，一旦被惡意機器人掃描到，您的 
+GitHub 帳號與儲存庫可能會被竄改。<br>
+👉 <strong>強烈建議您：現在立刻到 GitHub 設定中將該 Token 刪除 (Revoke) 並重新產生一個新的 Token。</strong></p>
+<hr>
+<h3>💡 接下來的建議作法：程式化生成 (更省 Token 且自動化)</h3>
+<p>既然我們已經有您目前環境的終端機執行權限，我建議採用以下方式來處理，可以替您省下大量 Token，同時避開字數限制：</p>
+<ol>
+	<li><strong>寫一個 Python 腳本</strong>：我會寫一支 Python 程式，裡面包含一份「基礎 Dashboard 
+	模板」，以及 20 種不同的「CSS 佈景主題（配色、排版風格、字體差異）」。</li>
+	<li><strong>自動生成 20 個檔案</strong>：讓 Python 在本地端自動生成 <code>dashboard_1.html</code> 
+	到 <code>dashboard_20.html</code>。</li>
+	<li><strong>自動 Push 到 GitHub</strong>：我透過 Git 指令或 GitHub API，一次性將這 20 個檔案與 
+	<code>index.html</code> (作為導覽頁) 推送上傳到您的 <code>
+	momo020406/Ruicheng-Tea-Factory</code> 儲存庫的 <code>main</code> 分支。</li>
+</ol>
+<p>請問您了解花費預估後，是否同意讓我用**「撰寫 Python 腳本自動生成與推播」**的方式來為您執行？ (也請記得先去重置您的 GitHub 
+Token！)</p>
+
+</body>
+
+</html>
