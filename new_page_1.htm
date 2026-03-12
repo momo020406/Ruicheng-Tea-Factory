@@ -196,8 +196,7 @@ id=&quot;weatherDesc&quot;&gt;—&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;<br>
 id=&quot;weatherTemp&quot;&gt;—&lt;/span&gt; °C&lt;/span&gt;&lt;/div&gt;<br>
 &lt;div class=&quot;weather-cell&quot;&gt;&lt;img src=&quot;https://img.icons8.com/color/48/humidity.png&quot;&gt;&lt;span&gt;濕度：&lt;span 
 id=&quot;weatherHumi&quot;&gt;—&lt;/span&gt; %&lt;/span&gt;&lt;/div&gt;<br>
-&lt;div class=&quot;weather-cell&quot;&gt;&lt;img 
-src=&quot;https://img.icons8.com/emoji/48/umbrella-with-rain-drops.png&quot;&gt;&lt;span&gt;降雨量：&lt;span 
+&lt;div class=&quot;weather-cell&quot;&gt;&lt;img src=&quot;https://img.icons8.com/emoji/48/umbrella-with-rain-drops.png&quot;&gt;&lt;span&gt;降雨量：&lt;span 
 id=&quot;rainfall&quot;&gt;—&lt;/span&gt; mm&lt;/span&gt;&lt;/div&gt;<br>
 &lt;/div&gt;<br>
 &lt;/section&gt;<br>
@@ -205,13 +204,10 @@ id=&quot;rainfall&quot;&gt;—&lt;/span&gt; mm&lt;/span&gt;&lt;/div&gt;<br>
 &lt;section class=&quot;panel&quot;&gt;<br>
 &lt;h2&gt;茶園溫溼度感測器&lt;/h2&gt;<br>
 &lt;div class=&quot;env-grid&quot;&gt;<br>
-&lt;div class=&quot;env-cell&quot;&gt;&lt;img 
-src=&quot;https://img.icons8.com/emoji/48/thermometer-emoji.png&quot;&gt;&lt;div&gt;&lt;span 
-class=&quot;label&quot;&gt;溫度 (°C)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;value&quot; 
-id=&quot;envTemp&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;<br>
-&lt;div class=&quot;env-cell&quot;&gt;&lt;img 
-src=&quot;https://img.icons8.com/color/48/humidity.png&quot;&gt;&lt;div&gt;&lt;span class=&quot;label&quot;&gt;濕度 
-(%)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;value&quot; id=&quot;envHumi&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;<br>
+&lt;div class=&quot;env-cell&quot;&gt;&lt;img src=&quot;https://img.icons8.com/emoji/48/thermometer-emoji.png&quot;&gt;&lt;div&gt;&lt;span 
+class=&quot;label&quot;&gt;溫度 (°C)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;value&quot; id=&quot;envTemp&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;<br>
+&lt;div class=&quot;env-cell&quot;&gt;&lt;img src=&quot;https://img.icons8.com/color/48/humidity.png&quot;&gt;&lt;div&gt;&lt;span 
+class=&quot;label&quot;&gt;濕度 (%)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;value&quot; id=&quot;envHumi&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;<br>
 &lt;/div&gt;<br>
 &lt;/section&gt;<br>
 &lt;/div&gt;<br>
@@ -251,10 +247,8 @@ stationCount:4<br>
 };<br>
 <br>
 function pad(n){return n&lt;10?&#39;0&#39;+n:n}<br>
-function nowStr(){const d=new Date();return 
-`${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`}<br>
-function dateStr(){const d=new Date();const 
-w=[&#39;日&#39;,&#39;一&#39;,&#39;二&#39;,&#39;三&#39;,&#39;四&#39;,&#39;五&#39;,&#39;六&#39;][d.getDay()];return 
+function nowStr(){const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`}<br>
+function dateStr(){const d=new Date();const w=[&#39;日&#39;,&#39;一&#39;,&#39;二&#39;,&#39;三&#39;,&#39;四&#39;,&#39;五&#39;,&#39;六&#39;][d.getDay()];return 
 `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}（週${w}）`}<br>
 function roundInt(x){if(x==null||x===&#39;&#39;)return&#39;—&#39;;const n=Number(x);return 
 isFinite(n)?Math.round(n):String(x);}<br>
@@ -286,8 +280,7 @@ updateFooter();<br>
 async function fetchCSV(){<br>
 const res=await fetch(CONFIG.sheetCsvUrl+&quot;&amp;t=&quot;+Date.now(),{cache:&#39;no-store&#39;});<br>
 const text=await res.text();<br>
-const 
-lines=text.trim().split(/\r?\n/).map(l=&gt;l.split(&#39;,&#39;).map(v=&gt;v.replace(/^&quot;|&quot;$/g,&#39;&#39;).trim()));<br>
+const lines=text.trim().split(/\r?\n/).map(l=&gt;l.split(&#39;,&#39;).map(v=&gt;v.replace(/^&quot;|&quot;$/g,&#39;&#39;).trim()));<br>
 const cols=lines[0].map(c=&gt;c.replace(/^\uFEFF/,&#39;&#39;).trim());<br>
 const rows=lines.slice(1);<br>
 return {cols,rows};<br>
@@ -333,8 +326,7 @@ console.log(&quot;✅ 同步完成，感測器時間：&quot;, genTime);<br>
 // 氣象資料<br>
 async function refreshWeather(){<br>
 try{<br>
-const 
-url=`https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=${CONFIG.cwaAuth}&amp;format=JSON&amp;StationId=${CONFIG.cwaStation}`;<br>
+const url=`https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=${CONFIG.cwaAuth}&amp;format=JSON&amp;StationId=${CONFIG.cwaStation}`;<br>
 const res=await fetch(url);const js=await res.json();<br>
 const st=js.records?.Station?.[0];<br>
 const w=st?.WeatherElement||{};<br>
@@ -374,7 +366,7 @@ document.getElementById(&quot;btnFullscreen&quot;).onclick=()=&gt;document.docum
 不同外觀的即時網頁Dashboard ，並且上傳到 https://github.com/momo020406/Ruicheng-Tea-Factory <br>
 <br>
 <br>
-不過，你先跟說 你會花多少錢 Token ?</p>
+<font size="7" color="#FF0000">不過，你先跟說 你會花多少錢 Token ?</font></p>
 <p>　</p>
 <p><font size="6" color="#FF0000">答</font></p>
 <p><img border="0" src="new_pa1.jpg"></p>
