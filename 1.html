@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Polar Soil Radar</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="app.js"></script>
+</head>
+
+<body>
+
+<h2>Soil Radar Chart</h2>
+
+<canvas id="chart"></canvas>
+
+<script>
+
+async function draw(){
+
+const data = await loadTeaData()
+
+const moist = data.surface.map(s=>s.moisture)
+
+new Chart(document.getElementById("chart"),{
+
+type:"radar",
+
+data:{
+labels:["第1站","第2站","第3站","第4站"],
+datasets:[{
+label:"Moisture",
+data:moist
+}]
+}
+
+})
+
+}
+
+draw()
+
+</script>
+
+</body>
+</html>
