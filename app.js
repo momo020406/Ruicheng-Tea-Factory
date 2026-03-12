@@ -1,87 +1,76 @@
-const DATA_URL = "data.json?t=" + Date.now();
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tea Garden Dashboard Templates</title>
+<style>
 
-function num(v, d = 0) {
-  const n = Number(v);
-  return Number.isFinite(n) ? n : d;
+body{
+font-family:Microsoft JhengHei;
+background:#CDEDC7;
+text-align:center;
+padding:50px;
 }
 
-function txt(v, d = "—") {
-  return v === undefined || v === null || v === "" ? d : v;
+h1{
+font-size:42px;
 }
 
-function parseTeaData(raw) {
-  const rt = raw.realtime || {};
-  const weather = raw.weather || {};
+.grid{
 
-  function stationBlock(stationNo, depth) {
-    const base = `Station${stationNo}_${depth}_`;
-    return {
-      soilTemp: num(rt[base + "SoilTemp"]),
-      soilMoisture: num(rt[base + "SoilMoisture"]),
-      nitrogen: num(rt[base + "Nitrogen"]),
-      phosphorus: num(rt[base + "Phosphorus"]),
-      potassium: num(rt[base + "Potassium"])
-    };
-  }
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+max-width:600px;
+margin:auto;
 
-  return {
-    time: txt(raw.time),
-    weather: {
-      airTemp: num(weather.air_temp),
-      humidity: num(weather.humidity),
-      weather: txt(weather.weather),
-      precip: num(weather.precip),
-      obsTime: txt(weather.obs_time),
-      location: txt(weather.location, "名間鄉")
-    },
-    teaAir: {
-      temp: num(rt["TeaGarden_Air_Temp"]),
-      humidity: num(rt["TeaGarden_Air_Humidity"])
-    },
-    stations: {
-      Surface: [1, 2, 3, 4].map(i => ({ name: `第${i}站`, ...stationBlock(i, "Surface") })),
-      "15cm": [1, 2, 3, 4].map(i => ({ name: `第${i}站`, ...stationBlock(i, "15cm") })),
-      "25cm": [1, 2, 3, 4].map(i => ({ name: `第${i}站`, ...stationBlock(i, "25cm") }))
-    }
-  };
 }
 
-async function loadTeaData() {
-  const res = await fetch(DATA_URL, { cache: "no-store" });
-  if (!res.ok) throw new Error("data.json 載入失敗");
-  const raw = await res.json();
-  return parseTeaData(raw);
+.card{
+
+background:white;
+padding:30px;
+border-radius:20px;
+cursor:pointer;
+font-size:22px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+
 }
 
-function makeDepthButtons(active = "Surface") {
-  return `
-    <div class="depth-switch">
-      <button data-depth="Surface" class="${active === "Surface" ? "active" : ""}">表面層</button>
-      <button data-depth="15cm" class="${active === "15cm" ? "active" : ""}">15cm</button>
-      <button data-depth="25cm" class="${active === "25cm" ? "active" : ""}">25cm</button>
-    </div>
-  `;
+.card:hover{
+transform:scale(1.05);
 }
 
-function stationTableRows(items) {
-  return items.map(s => `
-    <tr>
-      <td>${s.name}</td>
-      <td>${s.soilTemp}</td>
-      <td>${s.soilMoisture}</td>
-      <td>${s.nitrogen}</td>
-      <td>${s.phosphorus}</td>
-      <td>${s.potassium}</td>
-    </tr>
-  `).join("");
-}
+</style>
+</head>
 
-function bindDepthButtons(onChange) {
-  document.querySelectorAll("[data-depth]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-depth]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      onChange(btn.dataset.depth);
-    });
-  });
-}
+<body>
+
+<h1>瑞成智慧茶園 Dashboard</h1>
+
+<div class="grid">
+
+<div class="card" onclick="location='template1.html'">
+🌍 Polar Soil Radar
+</div>
+
+<div class="card" onclick="location='template2.html'">
+🔺 NPK Triangle
+</div>
+
+<div class="card" onclick="location='template3.html'">
+🔥 Moisture Heatmap
+</div>
+
+<div class="card" onclick="location='template4.html'">
+⚡ Soil Health Gauge
+</div>
+
+<div class="card" onclick="location='template5.html'">
+🌱 Root Zone Profile
+</div>
+
+</div>
+
+</body>
+</html>
