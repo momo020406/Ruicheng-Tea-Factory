@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NASA Control Panel</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="./app.js"></script>
+<style>
+body{margin:0;background:#09111f;color:#d7e3ff;font-family:Consolas,"Microsoft JhengHei",monospace}
+.wrap{padding:20px;max-width:1400px;margin:auto}
+.top{border:1px solid #29456f;background:#0d1a2e;padding:18px;border-radius:14px;margin-bottom:16px}
+.top h1{margin:0 0 8px;color:#8ec5ff;letter-spacing:2px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.box{border:1px solid #29456f;background:#0d1a2e;border-radius:14px;padding:16px;box-shadow:inset 0 0 0 1px rgba(142,197,255,.06)}
+.label{color:#7aa2d8;font-size:13px}
+.big{font-size:30px;font-weight:700;margin-top:8px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.depth-switch{display:flex;gap:8px;margin:10px 0 14px}
+.depth-switch button{background:#112544;color:#9ec7ff;border:1px solid #2f5a92;border-radius:8px;padding:8px 14px;cursor:pointer}
+.depth-switch .active{background:#1e5aa8;color:#fff}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #243d63;padding:10px;text-align:center}
+th{background:#12243f}
+@media(max-width:960px){.grid,.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>RUICHENG TEA GARDEN / MISSION PANEL</h1>
+    <div id="meta">SYSTEM BOOTING...</div>
+  </div>
+  <div class="grid" id="kpis"></div>
+  <div class="row">
+    <div class="box">
+      <h2>SOIL TELEMETRY</h2>
+      <div id="depthBox"></div>
+      <table>
+        <thead><tr><th>NODE</th><th>TEMP</th><th>MOIST</th><th>N</th><th>P</th><th>K</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="box">
+      <h2>NPK STACK</h2>
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+</div>
+<script>
+let chart;
+function render(data, depth="Surface"){
+  document.getElementById("meta").textContent =
+    `DATA TIME: ${data.time} | WEATHER OBS: ${data.weather.obsTime} | CONDITION: ${data.weather.weather}`;
+
+  document.getElementById("kpis").innerHTML = `
+    <div class="box"><div class="label">AIR TEMP</div><div class="big">${data.teaAir.temp}°C</div></div>
+    <div class="box"><div class="label">AIR HUMIDITY</div><div class="big">${data.teaAir.humidity}%</div></div>
+    <div class="box"><div class="label">WEATHER TEMP</div><div class="big">${data.weather.airTemp}°C</div></div>
+    <div class="box"><div class="label">RAINFALL</div><div class="big">${data.weather.precip} mm</div></div>
+  `;
+  document.getElementById("depthBox").innerHTML = makeDepthButtons(depth);
+  document.getElementById("tbody").innerHTML = stationTableRows(data.stations[depth]);
+  bindDepthButtons(d => render(data, d));
+
+  const items = data.stations[depth];
+  if(chart) chart.destroy();
+  chart = new Chart(document.getElementById("chart"), {
+    type:"bar",
+    data:{
+      labels:items.map(s=>s.name),
+      datasets:[
+        {label:"N",data:items.map(s=>s.nitrogen),backgroundColor:"rgba(88,214,141,.7)"},
+        {label:"P",data:items.map(s=>s.phosphorus),backgroundColor:"rgba(245,176,65,.7)"},
+        {label:"K",data:items.map(s=>s.potassium),backgroundColor:"rgba(231,76,60,.7)"}
+      ]
+    },
+    options:{responsive:true,scales:{x:{stacked:true},y:{stacked:true}}}
+  });
+}
+loadTeaData().then(d=>render(d));
+</script>
+</body>
+</html>
