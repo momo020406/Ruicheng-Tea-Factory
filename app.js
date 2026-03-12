@@ -1,76 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Tea Garden Dashboard Templates</title>
-<style>
+const DATA_URL = "data.json?t=" + Date.now()
 
-body{
-font-family:Microsoft JhengHei;
-background:#CDEDC7;
-text-align:center;
-padding:50px;
+async function loadTeaData() {
+
+    const res = await fetch(DATA_URL,{cache:"no-store"})
+    const raw = await res.json()
+
+    const rt = raw.realtime || {}
+
+    function station(n,depth){
+
+        const base = `Station${n}_${depth}_`
+
+        return {
+            name:`第${n}站`,
+            temp: Number(rt[base+"SoilTemp"]) || 0,
+            moisture: Number(rt[base+"SoilMoisture"]) || 0,
+            n: Number(rt[base+"Nitrogen"]) || 0,
+            p: Number(rt[base+"Phosphorus"]) || 0,
+            k: Number(rt[base+"Potassium"]) || 0
+        }
+    }
+
+    return {
+
+        time: raw.time,
+
+        teaTemp: rt["TeaGarden_Air_Temp"],
+        teaHumi: rt["TeaGarden_Air_Humidity"],
+
+        surface:[
+            station(1,"Surface"),
+            station(2,"Surface"),
+            station(3,"Surface"),
+            station(4,"Surface")
+        ],
+
+        d15:[
+            station(1,"15cm"),
+            station(2,"15cm"),
+            station(3,"15cm"),
+            station(4,"15cm")
+        ],
+
+        d25:[
+            station(1,"25cm"),
+            station(2,"25cm"),
+            station(3,"25cm"),
+            station(4,"25cm")
+        ]
+
+    }
+
 }
-
-h1{
-font-size:42px;
-}
-
-.grid{
-
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:20px;
-max-width:600px;
-margin:auto;
-
-}
-
-.card{
-
-background:white;
-padding:30px;
-border-radius:20px;
-cursor:pointer;
-font-size:22px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-
-}
-
-.card:hover{
-transform:scale(1.05);
-}
-
-</style>
-</head>
-
-<body>
-
-<h1>瑞成智慧茶園 Dashboard</h1>
-
-<div class="grid">
-
-<div class="card" onclick="location='template1.html'">
-🌍 Polar Soil Radar
-</div>
-
-<div class="card" onclick="location='template2.html'">
-🔺 NPK Triangle
-</div>
-
-<div class="card" onclick="location='template3.html'">
-🔥 Moisture Heatmap
-</div>
-
-<div class="card" onclick="location='template4.html'">
-⚡ Soil Health Gauge
-</div>
-
-<div class="card" onclick="location='template5.html'">
-🌱 Root Zone Profile
-</div>
-
-</div>
-
-</body>
-</html>
