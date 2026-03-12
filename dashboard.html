@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>瑞成智慧茶園 - 即時儀表板 v7.0</title>
+<style>
+:root{
+  --bg:#CDEDC7;
+  --panel:#245953;
+  --tile:#E7F6E7;
+  --text:#0B2D2A;
+  --num:#0f172a;
+  --ok:#16a34a;
+  --radius:18px;
+  --gap:14px;
+}
+html,body{
+  height:100%;margin:0;background:var(--bg);
+  font-family:"Microsoft JhengHei",system-ui,sans-serif;color:var(--text);
+}
+.wrap{max-width:1280px;margin:auto;padding:18px;}
+header{display:grid;gap:var(--gap);grid-template-columns:1.2fr 1fr 1.2fr;align-items:stretch;}
+.title{background:#e8f7ee;border:4px solid var(--panel);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:12px;}
+.title h1{margin:6px 0 2px 0;font-size:44px;letter-spacing:4px;}
+.clock,.datebox{
+  background:#fff;border:4px solid var(--panel);
+  border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:700;
+}
+.clock{font-size:46px;}
+.datebox{font-size:36px;font-weight:800;}
+.source-note {
+  font-size:55%;
+  color:#444;
+  font-weight:500;
+}
+.top-panels{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:var(--gap);}
+.panel{background:#fff;border:4px solid var(--panel);border-radius:var(--radius);padding:12px;}
+.panel h2{margin:0 0 8px 0;font-size:28px}
+.weather-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;background:var(--tile);
+  border-radius:14px;padding:12px;align-items:start;justify-items:start;
+}
+.weather-cell{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;line-height:1.4}
+.weather-cell img{width:36px;height:36px;}
+.env-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;background:var(--tile);
+  border-radius:14px;padding:12px;align-items:center;justify-items:center;
+}
+.env-cell{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:var(--num);}
+.env-cell img{width:50px;height:50px;}
+.env-cell .value{font-size:36px;font-weight:800}
+.table-wrap{
+  margin-top:var(--gap);background:#fff;border:4px solid var(--panel);
+  border-radius:var(--radius);padding:14px
+}
+.table-title{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;flex-wrap:wrap;gap:10px;
+}
+.table-title h3{margin:0;font-size:26px}
+.weather-title { line-height: 1.3; }
+.mobile-break { display: none; }
+
+@media (max-width:768px){
+  .mobile-break { display: block; }
+  .source-note {
+    display:block;
+    text-align:right;
+    margin-top:2px;
+  }
+}
+
+.btn{
+  background:var(--panel);
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  padding:10px 0;
+  width:130px;
+  font-size:20px;
+  font-weight:800;
+  cursor:pointer;
+  letter-spacing:1px;
+  text-align:center;
+}
+.btn:active{transform:translateY(1px);}
+.depth-btn.active{background:var(--ok);}
+
+table{width:100%;border-collapse:separate;border-spacing:0 10px}
+thead th{font-size:18px;color:#334155;text-align:center}
+tbody td,thead th{padding:10px 8px}
+tbody tr{background:var(--tile);}
+tbody tr td{font-size:22px;text-align:center;font-weight:700;color:var(--num)}
+tbody tr td:first-child{font-weight:800;color:#1f2937}
+.footer-line{
+  color:#2563eb;font-size:15px;margin-top:10px;text-align:center;
+  border-top:2px solid #a3bfa3;padding-top:6px;
+}
+
+@media (max-width:768px){
+  header{grid-template-columns:1fr !important;}
+  .title h1{font-size:32px}
+  .clock{font-size:32px}
+  .datebox{font-size:24px}
+  .top-panels{grid-template-columns:1fr;}
+  .env-grid{grid-template-columns:1fr;}
+  tbody tr td{font-size:18px}
+  .table-title {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .depth-buttons {
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:10px 14px;
+    justify-items:center;
+  }
+  .btn {
+    width:120px;
+    font-size:18px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="datebox" id="dateBox">--</div>
+    <div class="title"><h1>瑞成智慧茶園</h1><small>Real-time Dashboard</small></div>
+    <div class="clock"><div id="mainClock">00:00:00</div></div>
+  </header>
+
+  <div class="top-panels">
+    <section class="panel">
+      <h2 class="weather-title">
+        南投 名間鄉天氣狀況
+        <br class="mobile-break">
+        <small class="source-note">(資料來源：data.json / 氣象署)</small>
+      </h2>
+
+      <div class="weather-grid">
+        <div class="weather-cell"><img id="weatherIcon" src="" alt="天氣"><span>天氣：<span id="weatherDesc">—</span></span></div>
+        <div class="weather-cell"><img src="https://img.icons8.com/emoji/48/thermometer-emoji.png"><span>氣溫：<span id="weatherTemp">—</span> °C</span></div>
+        <div class="weather-cell"><img src="https://img.icons8.com/color/48/humidity.png"><span>濕度：<span id="weatherHumi">—</span> %</span></div>
+        <div class="weather-cell"><img src="https://img.icons8.com/emoji/48/umbrella-with-rain-drops.png"><span>降雨量：<span id="rainfall">—</span> mm</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>茶園溫溼度感測器</h2>
+      <div class="env-grid">
+        <div class="env-cell"><img src="https://img.icons8.com/emoji/48/thermometer-emoji.png"><div><span class="label">溫度 (°C)</span><br><span class="value" id="envTemp">—</span></div></div>
+        <div class="env-cell"><img src="https://img.icons8.com/color/48/humidity.png"><div><span class="label">濕度 (%)</span><br><span class="value" id="envHumi">—</span></div></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-title">
+      <h3>各站土壤數據</h3>
+      <div class="depth-buttons"> 
+        <button class="btn depth-btn active" data-depth="Surface">表面層</button>
+        <button class="btn depth-btn" data-depth="15cm">15 cm 層</button>
+        <button class="btn depth-btn" data-depth="25cm">25 cm 層</button>
+        <button class="btn" id="btnFullscreen">全螢幕</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>項目</th><th>溫度 (°C)</th><th>含水率 (%)</th><th>氮 (N)</th><th>磷 (P)</th><th>鉀 (K)</th></tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+
+    <div class="footer-line" id="footerInfo">
+      氣象站更新時間：—　｜　感測器讀取時間：—　｜　🔄 下次更新倒數：—
+    </div>
+  </div>
+</div>
+
+<script>
+const CONFIG = {
+  dataUrl: "data.json",
+  autoRefreshMinutes: 6,
+  stationCount: 4
+};
+
+function pad(n){ return n < 10 ? '0' + n : n; }
+function nowStr(){
+  const d = new Date();
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+function dateStr(){
+  const d = new Date();
+  const w = ['日','一','二','三','四','五','六'][d.getDay()];
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}（週${w}）`;
+}
+function roundInt(x){
+  if(x == null || x === '') return '—';
+  const n = Number(x);
+  return isFinite(n) ? Math.round(n) : String(x);
+}
+
+let weatherTime = "—";
+let genTime = "—";
+let currentDepth = "Surface";
+let remainingSec = CONFIG.autoRefreshMinutes * 60;
+const footer = document.getElementById("footerInfo");
+
+function updateFooter(){
+  const m = Math.floor(remainingSec / 60);
+  const s = pad(remainingSec % 60);
+  footer.textContent = `氣象站更新時間：${weatherTime}　｜　感測器讀取時間：${genTime}　｜　🔄 下次更新倒數：${m}:${s}`;
+}
+
+// 即時時鐘
+(function clockTick(){
+  document.getElementById("mainClock").textContent = nowStr();
+  document.getElementById("dateBox").textContent = dateStr();
+  requestAnimationFrame(() => setTimeout(clockTick, 250));
+})();
+
+// 倒數更新：時間到就重抓資料，不整頁重整
+setInterval(() => {
+  remainingSec--;
+  if (remainingSec <= 0) {
+    refreshAll(currentDepth);
+    remainingSec = CONFIG.autoRefreshMinutes * 60;
+  }
+  updateFooter();
+}, 1000);
+
+async function fetchJSON(){
+  const res = await fetch(CONFIG.dataUrl + "?t=" + Date.now(), { cache: "no-store" });
+  if(!res.ok) throw new Error("data.json 載入失敗");
+  return await res.json();
+}
+
+function getDepthData(rt, stationNo, depth){
+  const base = `Station${stationNo}_${depth}_`;
+  return {
+    soilTemp: rt[base + "SoilTemp"],
+    soilMoisture: rt[base + "SoilMoisture"],
+    nitrogen: rt[base + "Nitrogen"],
+    phosphorus: rt[base + "Phosphorus"],
+    potassium: rt[base + "Potassium"]
+  };
+}
+
+async function refreshAll(depth = "Surface"){
+  try{
+    const js = await fetchJSON();
+    const rt = js.realtime || {};
+    const weather = js.weather || {};
+
+    genTime = js.time || "—";
+    weatherTime = (weather.obs_time || "").replace("T"," ").slice(0,19) || "—";
+
+    document.getElementById("envTemp").textContent = roundInt(rt["TeaGarden_Air_Temp"]);
+    document.getElementById("envHumi").textContent = roundInt(rt["TeaGarden_Air_Humidity"]);
+
+    document.getElementById("weatherDesc").textContent = weather.weather || "—";
+    document.getElementById("weatherTemp").textContent = roundInt(weather.air_temp);
+    document.getElementById("weatherHumi").textContent = roundInt(weather.humidity);
+    document.getElementById("rainfall").textContent = roundInt(weather.precip);
+
+    document.getElementById("weatherIcon").src =
+      (weather.weather || "").includes("雨")
+      ? "https://img.icons8.com/emoji/48/cloud-with-rain.png"
+      : "https://img.icons8.com/emoji/48/sun-emoji.png";
+
+    const tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+
+    for(let s = 1; s <= CONFIG.stationCount; s++){
+      const d = getDepthData(rt, s, depth);
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>第${s}站</td>
+        <td>${roundInt(d.soilTemp)}</td>
+        <td>${roundInt(d.soilMoisture)}</td>
+        <td>${roundInt(d.nitrogen)}</td>
+        <td>${roundInt(d.phosphorus)}</td>
+        <td>${roundInt(d.potassium)}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    remainingSec = CONFIG.autoRefreshMinutes * 60;
+    updateFooter();
+    console.log("✅ data.json 同步完成：", genTime, depth);
+  }catch(e){
+    console.warn("⚠️ data.json 錯誤:", e);
+  }
+}
+
+// 層級切換
+document.querySelectorAll(".depth-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".depth-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentDepth = btn.getAttribute("data-depth");
+    refreshAll(currentDepth);
+  });
+});
+
+// 初始化
+refreshAll(currentDepth);
+document.getElementById("btnFullscreen").onclick = () => document.documentElement.requestFullscreen?.();
+</script>
+</body>
+</html>
