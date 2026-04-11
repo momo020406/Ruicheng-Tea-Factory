@@ -1,9 +1,9 @@
 {
-  "time": "2026-04-11 21:14:15",
+  "time": "2026-04-11 21:24:15",
   "realtime": {
     "Station3_Surface_SoilTemp": 24.4,
     "Station3_Surface_SoilMoisture": 27.6,
-    "Station3_Surface_Nitrogen": 28.6,
+    "Station3_Surface_Nitrogen": 33.8,
     "Station3_Surface_Phosphorus": 29.8,
     "Station3_Surface_Potassium": 52,
     "Station3_25cm_SoilTemp": 23.2,
@@ -15,7 +15,7 @@
   "weather": {
     "air_temp": 25.0,
     "humidity": 88.0,
-    "weather": "-99",
+    "weather": "晴",
     "precip": 0.0,
     "obs_time": "2026-04-11T21:00:00+08:00",
     "location": "名間"
