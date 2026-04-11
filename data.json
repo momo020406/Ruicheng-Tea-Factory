@@ -1,23 +1,23 @@
 {
-  "time": "2026-04-11 19:04:16",
+  "time": "2026-04-11 19:14:15",
   "realtime": {
     "Station3_Surface_SoilTemp": 24.8,
-    "Station3_Surface_SoilMoisture": 27.5,
-    "Station3_Surface_Nitrogen": 35.0,
+    "Station3_Surface_SoilMoisture": 27.6,
+    "Station3_Surface_Nitrogen": 28.6,
     "Station3_Surface_Phosphorus": 32.6,
-    "Station3_Surface_Potassium": 54,
+    "Station3_Surface_Potassium": 52,
     "Station3_25cm_SoilTemp": 23.1,
-    "Station3_25cm_SoilMoisture": 29.4,
-    "Station3_25cm_Nitrogen": 2,
+    "Station3_25cm_SoilMoisture": 29.5,
+    "Station3_25cm_Nitrogen": 1,
     "Station3_25cm_Phosphorus": 3,
     "Station3_25cm_Potassium": 2
   },
   "weather": {
-    "air_temp": 26.4,
-    "humidity": 82.0,
+    "air_temp": 26.0,
+    "humidity": 85.0,
     "weather": "晴",
     "precip": 0.0,
-    "obs_time": "2026-04-11T18:00:00+08:00",
+    "obs_time": "2026-04-11T19:00:00+08:00",
     "location": "名間"
   }
 }
