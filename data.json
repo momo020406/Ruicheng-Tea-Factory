@@ -1,11 +1,11 @@
 {
-  "time": "2026-04-12 19:24:23",
+  "time": "2026-04-12 19:34:24",
   "realtime": {
-    "Station3_Surface_SoilTemp": 25.0,
+    "Station3_Surface_SoilTemp": 24.9,
     "Station3_Surface_SoilMoisture": 27.3,
-    "Station3_Surface_Nitrogen": 35.0,
+    "Station3_Surface_Nitrogen": 27.4,
     "Station3_Surface_Phosphorus": 31.4,
-    "Station3_Surface_Potassium": 55
+    "Station3_Surface_Potassium": 52
   },
   "weather": {
     "air_temp": 26.3,
