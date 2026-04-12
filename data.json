@@ -1,18 +1,18 @@
 {
-  "time": "2026-04-12 18:04:26",
+  "time": "2026-04-12 18:14:24",
   "realtime": {
-    "Station3_Surface_SoilTemp": 25.3,
+    "Station3_Surface_SoilTemp": 25.2,
     "Station3_Surface_SoilMoisture": 27.3,
     "Station3_Surface_Nitrogen": 35.0,
-    "Station3_Surface_Phosphorus": 30.2,
+    "Station3_Surface_Phosphorus": 28.6,
     "Station3_Surface_Potassium": 52
   },
   "weather": {
-    "air_temp": 28.8,
-    "humidity": 65.0,
-    "weather": "多雲",
+    "air_temp": 27.2,
+    "humidity": 71.0,
+    "weather": "晴",
     "precip": 0.0,
-    "obs_time": "2026-04-12T17:00:00+08:00",
+    "obs_time": "2026-04-12T18:00:00+08:00",
     "location": "名間"
   }
 }
