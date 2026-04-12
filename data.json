@@ -1,16 +1,16 @@
 {
-  "time": "2026-04-12 15:44:17",
+  "time": "2026-04-12 15:54:14",
   "realtime": {
-    "Station3_Surface_SoilTemp": 25.7,
+    "Station3_Surface_SoilTemp": 25.6,
     "Station3_Surface_SoilMoisture": 27.4,
-    "Station3_Surface_Nitrogen": 31.4,
-    "Station3_Surface_Phosphorus": 27.4,
-    "Station3_Surface_Potassium": 53,
+    "Station3_Surface_Nitrogen": 28.6,
+    "Station3_Surface_Phosphorus": 33.8,
+    "Station3_Surface_Potassium": 57,
     "Station3_25cm_SoilTemp": 23.3,
-    "Station3_25cm_SoilMoisture": 28.0,
-    "Station3_25cm_Nitrogen": 3,
-    "Station3_25cm_Phosphorus": 3,
-    "Station3_25cm_Potassium": 3
+    "Station3_25cm_SoilMoisture": 29.6,
+    "Station3_25cm_Nitrogen": 1,
+    "Station3_25cm_Phosphorus": 1,
+    "Station3_25cm_Potassium": 1
   },
   "weather": {
     "air_temp": 31.0,
